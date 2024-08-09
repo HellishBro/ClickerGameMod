@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.hellishbro.clickergamemod.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "MInGameHud",
+    "MClientPlayNetworkHandler",
+    "MHandledScreen"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

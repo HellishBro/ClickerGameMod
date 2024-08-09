@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "clickergamemod",
+  "version": "${version}",
+  "name": "ClickerGameMod",
+  "description": "Mod for +1 clicker, a game on DiamondFire",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/clickergamemod/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "me.hellishbro.clickergamemod.ClickerGameMod"
+    ]
+  },
+  "mixins": [
+    "clickergamemod.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
