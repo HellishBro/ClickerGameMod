@@ -20,9 +20,8 @@ public class ClickerGameMod implements ClientModInitializer {
     public static Logger LOGGER = LogManager.getLogger("ClickerGameMod");
     public static PlusOneClicker stats = new PlusOneClicker();
     public static boolean CLICKING = false;
-    public static int REQUESTING_STATS = 0; // step
-    // 0: not requesting, 3: reading header, 2: reading normal mode tags, 1: reading cosmos tags
     public static boolean GET_COSMOS = false;
+    public static String STATS_COMMAND_RUNNER = "";
 
     @Override
     public void onInitializeClient() {
@@ -49,23 +48,16 @@ public class ClickerGameMod implements ClientModInitializer {
                         String address = Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler().getServerInfo()).address.replaceFirst(":25565", "");
                         if (address.startsWith("mcdiamondfire")) {
                             stats = PlusOneClicker.fromText(Objects.requireNonNull(entity.getCustomName()), stats);
-                            if (!prevClicking) TimedScheduler.scheduleTask(new TimedScheduler.ScheduledTask(5, () -> {
-                                REQUESTING_STATS = 3;
+                            if (!prevClicking) TimedScheduler.scheduleTask(new TimedScheduler.ScheduledTask(10, () -> {
+                                GET_COSMOS = true;
                                 client.getNetworkHandler().sendChatMessage("@stats");
                                 ClickerGameMod.LOGGER.info("Getting cosmos tags");
+                                MinecraftClient.getInstance().player.sendMessage(TextUtil.fromString("§aClickerGameMod§f: Requested your stats."));
                             }));
                             CLICKING = true;
                             break;
                         }
                     }
-                }
-            }
-            if (GET_COSMOS) {
-                if (MinecraftClient.getInstance().currentScreen == null) {
-                    ClickerGameMod.REQUESTING_STATS = 3;
-                    Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).sendChatMessage("@stats");
-                    ClickerGameMod.LOGGER.info("Getting cosmos tags");
-                    GET_COSMOS = false;
                 }
             }
         }));
@@ -84,8 +76,9 @@ public class ClickerGameMod implements ClientModInitializer {
                 return 1;
             }));
             dispatcher.register(literalArgumentBuilder("requeststats").executes(context -> {
-                REQUESTING_STATS = 3;
+                GET_COSMOS = true;
                 Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).sendChatMessage("@stats");
+                MinecraftClient.getInstance().player.sendMessage(TextUtil.fromString("§aClickerGameMod§f: Requested your stats."));
                 return 1;
             }));
         });
