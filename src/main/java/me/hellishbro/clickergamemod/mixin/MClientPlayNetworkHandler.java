@@ -27,7 +27,7 @@ public class MClientPlayNetworkHandler {
             } else {
                 if (ClickerGameMod.STATS_COMMAND_RUNNER.equals(MinecraftClient.getInstance().getSession().getUsername())) {
                     ClickerGameMod.LOGGER.info("@stats runner == player name");
-                    if (raw.startsWith("&r&f&r&#20332E") || raw.startsWith("&r&f&r&8[&r&#F155CE") || raw.startsWith("&r&f&r&8[&r&#CE55F1") || raw.startsWith("&r&f&r&8[&r&#3746EF")) {
+                    if (raw.startsWith("&r&f&r&#20332E") || raw.startsWith("&r&f&r&8[&r&#F155CE") || raw.startsWith("&r&f&r&8[&r&#CE55F1") || raw.startsWith("&r&f&r&8[&r&#3746EF") || raw.isEmpty()) {
                         ClickerGameMod.stats.cosmosFromText(content);
                         ClickerGameMod.LOGGER.info("Cosmos tag get.");
                         ClickerGameMod.GET_COSMOS = false;
