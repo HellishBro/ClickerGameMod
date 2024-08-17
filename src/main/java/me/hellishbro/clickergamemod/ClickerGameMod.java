@@ -45,7 +45,7 @@ public class ClickerGameMod implements ClientModInitializer {
                     } else {
                         isThisEntity = entity.getPos().isInRange(new Vec3d(7042.5, 51.0, 6622.5), 0.1) && entity.getType() == EntityType.INTERACTION;
                     }
-                    if (isThisEntity) {
+                    if (isThisEntity && MinecraftClient.getInstance().getNetworkHandler() != null) {
                         String address = Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler().getServerInfo()).address.replaceFirst(":25565", "");
                         if (address.startsWith("mcdiamondfire")) {
                             stats = PlusOneClicker.fromText(Objects.requireNonNull(entity.getCustomName()), stats);
