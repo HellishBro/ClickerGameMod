@@ -2,6 +2,7 @@ package me.hellishbro.clickergamemod.mixin;
 
 import me.hellishbro.clickergamemod.ClickerGameMod;
 import me.hellishbro.clickergamemod.TextUtil;
+import me.hellishbro.clickergamemod.TimedScheduler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -25,8 +26,7 @@ public class MHandledScreen {
                 || (name.equals("Cosmos Awakening") && (slotId == 11 || slotId == 15))
                 || (name.equals("Cosmos Perfection") && (slotId == 11 || slotId == 15))
         ) {
-            ClickerGameMod.GET_COSMOS = true;
+            TimedScheduler.scheduleTask(new TimedScheduler.ScheduledTask(2, ClickerGameMod::getCosmos));
         }
-        ClickerGameMod.LOGGER.info("Current screen: {}", name);
     }
 }

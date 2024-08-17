@@ -48,12 +48,7 @@ public class ClickerGameMod implements ClientModInitializer {
                         String address = Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler().getServerInfo()).address.replaceFirst(":25565", "");
                         if (address.startsWith("mcdiamondfire")) {
                             stats = PlusOneClicker.fromText(Objects.requireNonNull(entity.getCustomName()), stats);
-                            if (!prevClicking) TimedScheduler.scheduleTask(new TimedScheduler.ScheduledTask(10, () -> {
-                                GET_COSMOS = true;
-                                client.getNetworkHandler().sendChatMessage("@stats");
-                                ClickerGameMod.LOGGER.info("Getting cosmos tags");
-                                MinecraftClient.getInstance().player.sendMessage(TextUtil.fromString("§aClickerGameMod§f: Requested your stats."));
-                            }));
+                            if (!prevClicking) TimedScheduler.scheduleTask(new TimedScheduler.ScheduledTask(10, ClickerGameMod::getCosmos));
                             CLICKING = true;
                             break;
                         }
@@ -76,9 +71,7 @@ public class ClickerGameMod implements ClientModInitializer {
                 return 1;
             }));
             dispatcher.register(literalArgumentBuilder("requeststats").executes(context -> {
-                GET_COSMOS = true;
-                Objects.requireNonNull(MinecraftClient.getInstance().getNetworkHandler()).sendChatMessage("@stats");
-                MinecraftClient.getInstance().player.sendMessage(TextUtil.fromString("§aClickerGameMod§f: Requested your stats."));
+                getCosmos();
                 return 1;
             }));
         });
@@ -86,5 +79,17 @@ public class ClickerGameMod implements ClientModInitializer {
 
     private static LiteralArgumentBuilder<FabricClientCommandSource> literalArgumentBuilder(String literal) {
         return LiteralArgumentBuilder.literal(literal);
+    }
+
+    public static void getCosmos() {
+        GET_COSMOS = true;
+        MinecraftClient.getInstance().getNetworkHandler().sendChatMessage("@stats");
+        MinecraftClient.getInstance().player.sendMessage(TextUtil.fromString("§aClickerGameMod§f: Getting cosmos tags..."));
+        TimedScheduler.scheduleTask(new TimedScheduler.ScheduledTask(2, () -> {
+            if (!GET_COSMOS) {
+                GET_COSMOS = false;
+                MinecraftClient.getInstance().player.sendMessage(TextUtil.fromString("§aClickerGameMod§f: §cCosmos tag get timed out."));
+            }
+        }));
     }
 }
