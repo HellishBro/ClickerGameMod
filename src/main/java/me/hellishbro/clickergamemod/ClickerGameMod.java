@@ -21,6 +21,7 @@ public class ClickerGameMod implements ClientModInitializer {
     public static PlusOneClicker stats = new PlusOneClicker();
     public static boolean CLICKING = false;
     public static boolean GET_COSMOS = false;
+    public static boolean REQUEST_COSMOS = false; // for other threads
     public static String STATS_COMMAND_RUNNER = "";
 
     @Override
@@ -55,6 +56,10 @@ public class ClickerGameMod implements ClientModInitializer {
                     }
                 }
             }
+            if (REQUEST_COSMOS) {
+                REQUEST_COSMOS = false;
+                getCosmos();
+            }
         }));
 
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {
@@ -84,7 +89,6 @@ public class ClickerGameMod implements ClientModInitializer {
     public static void getCosmos() {
         GET_COSMOS = true;
         MinecraftClient.getInstance().getNetworkHandler().sendChatMessage("@stats");
-        MinecraftClient.getInstance().player.sendMessage(TextUtil.fromString("§aClickerGameMod§f: Getting cosmos tags..."));
         TimedScheduler.scheduleTask(new TimedScheduler.ScheduledTask(2, () -> {
             if (!GET_COSMOS) {
                 GET_COSMOS = false;

@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TimedScheduler {
@@ -17,7 +18,7 @@ public class TimedScheduler {
         }
     }
 
-    private static final CopyOnWriteArrayList<ScheduledTask> tasks = new CopyOnWriteArrayList<>();
+    private static final ArrayList<ScheduledTask> tasks = new ArrayList<>();
 
     public static void scheduleTask(ScheduledTask scheduledTask) {
         tasks.add(scheduledTask);
@@ -25,13 +26,13 @@ public class TimedScheduler {
 
     public static void init() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            Iterator<ScheduledTask> it = tasks.iterator();
-            while (it.hasNext()) {
-                ScheduledTask t = it.next();
+            for (int i = 0; i < tasks.size(); i++) {
+                ScheduledTask t = tasks.get(i);
                 t.ticks--;
                 if (t.ticks <= 0) {
                     t.task.run();
-                    it.remove();
+                    tasks.remove(i);
+                    i--;
                 }
             }
         });

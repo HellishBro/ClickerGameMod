@@ -26,7 +26,9 @@ public class MHandledScreen {
                 || (name.equals("Cosmos Awakening") && (slotId == 11 || slotId == 15))
                 || (name.equals("Cosmos Perfection") && (slotId == 11 || slotId == 15))
         ) {
-            TimedScheduler.scheduleTask(new TimedScheduler.ScheduledTask(2, ClickerGameMod::getCosmos));
+            TimedScheduler.scheduleTask(new TimedScheduler.ScheduledTask(2, () -> {
+                ClickerGameMod.REQUEST_COSMOS = true;
+            }));
         }
     }
 }
