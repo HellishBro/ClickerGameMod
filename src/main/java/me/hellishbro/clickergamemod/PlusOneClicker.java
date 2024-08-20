@@ -46,7 +46,8 @@ public class PlusOneClicker {
         // enlightening color: #F155CE
         // awakening color: #CE55F1
         // perfection color: #3746EF
-        // 100%: &#20332E[&#99FFE6◦⁑&#50E0B0⧈&#99FFE6⁑◦&#20332E]
+        // cong: [&#5176E2⧈]
+        // quint: &#20332E[&#99FFE6◦⁑&#50E0B0⧈&#99FFE6⁑◦&#20332E]
         ClickerGameMod.LOGGER.info(raw);
         Matcher enlighteningMatch = Pattern.compile("\\[&#F155CE\\+(\\d+)]").matcher(raw);
         enlightening = enlighteningMatch.find() ? Integer.parseInt(enlighteningMatch.group(1)) : 0;

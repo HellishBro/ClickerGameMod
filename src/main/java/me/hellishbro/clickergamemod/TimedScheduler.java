@@ -26,7 +26,8 @@ public class TimedScheduler {
 
     public static void init() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            for (int i = 0; i < tasks.size(); i++) {
+            int iterations = 0;
+            for (int i = 0; iterations < tasks.size(); i++) {
                 ScheduledTask t = tasks.get(i);
                 t.ticks--;
                 if (t.ticks <= 0) {
@@ -34,6 +35,7 @@ public class TimedScheduler {
                     tasks.remove(i);
                     i--;
                 }
+                iterations++;
             }
         });
     }

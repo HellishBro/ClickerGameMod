@@ -23,6 +23,10 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // Implementation
+    implementation 'com.google.code.gson:gson:2.11.0'
+    implementation group: 'commons-lang', name: 'commons-lang', version: '2.6'
 }
 
 processResources {

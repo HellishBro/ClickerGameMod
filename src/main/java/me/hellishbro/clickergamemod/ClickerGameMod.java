@@ -76,6 +76,7 @@ public class ClickerGameMod implements ClientModInitializer {
                 return 1;
             }));
             dispatcher.register(literalArgumentBuilder("requeststats").executes(context -> {
+                MinecraftClient.getInstance().player.sendMessage(TextUtil.fromString("§aClickerGameMod§f: Getting Cosmos tags."));
                 getCosmos();
                 return 1;
             }));
@@ -89,10 +90,10 @@ public class ClickerGameMod implements ClientModInitializer {
     public static void getCosmos() {
         GET_COSMOS = true;
         MinecraftClient.getInstance().getNetworkHandler().sendChatMessage("@stats");
-        TimedScheduler.scheduleTask(new TimedScheduler.ScheduledTask(2, () -> {
-            if (!GET_COSMOS) {
+        TimedScheduler.scheduleTask(new TimedScheduler.ScheduledTask(10, () -> {
+            if (GET_COSMOS) {
                 GET_COSMOS = false;
-                MinecraftClient.getInstance().player.sendMessage(TextUtil.fromString("§aClickerGameMod§f: §cCosmos tag get timed out."));
+                MinecraftClient.getInstance().player.sendMessage(TextUtil.fromString("§aClickerGameMod§f: §cCosmos tag get timed out. Please run §b/requeststats§c a bit later."));
             }
         }));
     }

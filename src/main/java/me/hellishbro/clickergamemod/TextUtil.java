@@ -138,10 +138,6 @@ public class TextUtil {
             format = format.replaceAll("§" + spice.name + ";", "§#" + s);
         }
 
-        for (Map.Entry<String, String> entry : Config.getInstance().symbolMap.entrySet()) {
-            format = format.replaceAll(":" + entry.getKey() + ":", entry.getValue());
-        }
-
         return TextUtil.fromString(format);
     }
 }
