@@ -17,6 +17,7 @@ public class PlusOneClicker {
     public long reincarnation;
     public long omega;
     public long reformation;
+    public long reformation2;
 
     public int enlightening;
     public int awakening;
@@ -24,7 +25,7 @@ public class PlusOneClicker {
 
     public boolean challenge;
 
-    public PlusOneClicker(long pr, long sp, long reb, long apoth, long ff, long rein, long omega, long rfm, boolean chall, int enlight, int awake, int perf) {
+    public PlusOneClicker(long pr, long sp, long reb, long apoth, long ff, long rein, long omega, long rfm, long rfm2, boolean chall, int enlight, int awake, int perf) {
         prestige = pr;
         superprestige = sp;
         rebirth = reb;
@@ -33,6 +34,7 @@ public class PlusOneClicker {
         reincarnation = rein;
         this.omega = omega;
         reformation = rfm;
+        reformation2 = rfm2;
         challenge = chall;
         enlightening = enlight;
         awakening = awake;
@@ -60,7 +62,7 @@ public class PlusOneClicker {
     }
 
     public PlusOneClicker() {
-        this(0, 0, 0, 0, 0, 0, 0, 0, false, 0, 0, 0);
+        this(0, 0, 0, 0, 0, 0, 0, 0, 0, false, 0, 0, 0);
     }
 
     public static PlusOneClicker fromText(Text text, PlusOneClicker old) {
@@ -91,19 +93,22 @@ public class PlusOneClicker {
         Matcher apothMatch = Pattern.compile("\\[&b\\+(\\d+)]").matcher(raw);
         long apotheosis = apothMatch.find() ? Long.parseLong(apothMatch.group(1)) : 0;
 
-        Matcher ffMatch = Pattern.compile("\\[&e\\+(\\d+)]").matcher(raw);
+        Matcher ffMatch = Pattern.compile("\\[&e\\+(\\d+)(&#CCBD8E◦&#FFD856\\d*❂)?]").matcher(raw);
         long finalFruit = ffMatch.find() ? Long.parseLong(ffMatch.group(1)) : 0;
 
         Matcher reinMatch = Pattern.compile("\\[&#?[0-9A-Fa-f]+\\+(\\d+)∞]").matcher(raw);
         long reincarnation = reinMatch.find() ? Long.parseLong(reinMatch.group(1)) : 0;
 
-        Matcher omegaMatch = Pattern.compile("\\[&#?[0-9A-Fa-f]+\\+(\\d+)Ω(⁺[⁰¹²³⁴⁵⁶⁷⁸⁹]+)?]").matcher(raw);
+        Matcher omegaMatch = Pattern.compile("\\[&#?[0-9A-Fa-f]+\\+(\\d+)Ω(⁺[⁰¹²³⁴⁵⁶⁷⁸⁹]+)?(⁺[⁰¹²³⁴⁵⁶⁷⁸⁹]+)?]").matcher(raw);
         long omega = omegaMatch.find() ? Long.parseLong(omegaMatch.group(1)) : 0;
 
-        Matcher rfmMatch = Pattern.compile("\\[&#?[0-9A-Fa-f]+\\+\\d+Ω(⁺[⁰¹²³⁴⁵⁶⁷⁸⁹]+)]").matcher(raw);
+        Matcher rfmMatch = Pattern.compile("\\[&#?[0-9A-Fa-f]+\\+\\d+Ω(⁺[⁰¹²³⁴⁵⁶⁷⁸⁹]+)(⁺[⁰¹²³⁴⁵⁶⁷⁸⁹]+)?]").matcher(raw);
         long reformation = rfmMatch.find() ? parseSuperscriptToInt(rfmMatch.group(1).substring(1)) : 0;
 
-        return new PlusOneClicker(prestige, superprestige, rebirth, apotheosis, finalFruit, reincarnation, omega, reformation, challenge, old.enlightening, old.awakening, old.perfection);
+        Matcher rfm2Match = Pattern.compile("\\[&#?[0-9A-Fa-f]+\\+\\d+Ω(⁺[⁰¹²³⁴⁵⁶⁷⁸⁹]+)(⁺[⁰¹²³⁴⁵⁶⁷⁸⁹]+)]").matcher(raw);
+        long reformation2 = rfm2Match.find() ? parseSuperscriptToInt(rfm2Match.group(2).substring(1)) : 0;
+
+        return new PlusOneClicker(prestige, superprestige, rebirth, apotheosis, finalFruit, reincarnation, omega, reformation, reformation2, challenge, old.enlightening, old.awakening, old.perfection);
     }
 
     private static long parseSuperscriptToInt(String superscript) {
@@ -119,19 +124,21 @@ public class PlusOneClicker {
     
     public Text getText(Config config) {
         MutableText text = Text.literal("");
-        if (reformation != 0)
+        if (reformation2 != 0)
+            text.append(TextUtil.presLayer(config.reformation2Text, reformation2, -1));
+        if (reformation != 0 || reformation2 != 0)
             text.append(TextUtil.presLayer(config.reformationText, reformation, -1));
-        if (omega != 0 || reformation != 0)
+        if (omega != 0 || reformation != 0 || reformation2 != 0)
             text.append(TextUtil.presLayer(config.omegaText, omega, -1));
-        if (reincarnation != 0 || omega != 0 || reformation != 0)
+        if (reincarnation != 0 || omega != 0 || reformation != 0 || reformation2 != 0)
             text.append(TextUtil.presLayer(config.reincarnationText, reincarnation, -1));
-        if (finalFruit != 0 || reincarnation != 0 || omega != 0 || reformation != 0)
+        if (finalFruit != 0 || reincarnation != 0 || omega != 0 || reformation != 0 || reformation2 != 0)
             text.append(TextUtil.presLayer(config.finalFruitText, finalFruit, 100));
-        if (apotheosis != 0 || finalFruit != 0 || reincarnation != 0 || omega != 0 || reformation != 0)
+        if (apotheosis != 0 || finalFruit != 0 || reincarnation != 0 || omega != 0 || reformation != 0 || reformation2 != 0)
             text.append(TextUtil.presLayer(config.apotheosisText, apotheosis, -1));
-        if (rebirth != 0 || apotheosis != 0 || finalFruit != 0 || reincarnation != 0 || omega != 0 || reformation != 0)
+        if (rebirth != 0 || apotheosis != 0 || finalFruit != 0 || reincarnation != 0 || omega != 0 || reformation != 0 || reformation2 != 0)
             text.append(TextUtil.presLayer(config.rebirthText, rebirth, 30));
-        if (superprestige != 0 || rebirth != 0 || apotheosis != 0 || finalFruit != 0 || reincarnation != 0 || omega != 0 || reformation != 0)
+        if (superprestige != 0 || rebirth != 0 || apotheosis != 0 || finalFruit != 0 || reincarnation != 0 || omega != 0 || reformation != 0 || reformation2 != 0)
             text.append(TextUtil.presLayer(config.superprestigeText, superprestige, 30));
         text.append(TextUtil.presLayer(config.prestigeText, prestige, -1));
         return text;

@@ -40,20 +40,22 @@ public abstract class MInGameHud {
                 } else {
                     drawText(context, this.getTextRenderer(), TextUtil.format(config.topText), config, 0);
                     drawText(context, this.getTextRenderer(), TextUtil.presLayer(config.prestigeText, clicker.prestige, -1), config, 1);
-                    if (clicker.superprestige != 0 || clicker.rebirth != 0 || clicker.apotheosis != 0 || clicker.finalFruit != 0 || clicker.reincarnation != 0 || clicker.omega != 0 || clicker.reformation != 0)
+                    if (clicker.superprestige != 0 || clicker.rebirth != 0 || clicker.apotheosis != 0 || clicker.finalFruit != 0 || clicker.reincarnation != 0 || clicker.omega != 0 || clicker.reformation != 0 || clicker.reformation2 != 0)
                         drawText(context, this.getTextRenderer(), TextUtil.presLayer(config.superprestigeText, clicker.superprestige, 30), config, 2);
-                    if (clicker.rebirth != 0 || clicker.apotheosis != 0 || clicker.finalFruit != 0 || clicker.reincarnation != 0 || clicker.omega != 0 || clicker.reformation != 0)
+                    if (clicker.rebirth != 0 || clicker.apotheosis != 0 || clicker.finalFruit != 0 || clicker.reincarnation != 0 || clicker.omega != 0 || clicker.reformation != 0 || clicker.reformation2 != 0)
                         drawText(context, this.getTextRenderer(), TextUtil.presLayer(config.rebirthText, clicker.rebirth, 30), config, 3);
-                    if (clicker.apotheosis != 0 || clicker.finalFruit != 0 || clicker.reincarnation != 0 || clicker.omega != 0 || clicker.reformation != 0)
+                    if (clicker.apotheosis != 0 || clicker.finalFruit != 0 || clicker.reincarnation != 0 || clicker.omega != 0 || clicker.reformation != 0 || clicker.reformation2 != 0)
                         drawText(context, this.getTextRenderer(), TextUtil.presLayer(config.apotheosisText, clicker.apotheosis, -1), config, 4);
-                    if (clicker.finalFruit != 0 || clicker.reincarnation != 0 || clicker.omega != 0 || clicker.reformation != 0)
+                    if (clicker.finalFruit != 0 || clicker.reincarnation != 0 || clicker.omega != 0 || clicker.reformation != 0 || clicker.reformation2 != 0)
                         drawText(context, this.getTextRenderer(), TextUtil.presLayer(config.finalFruitText, clicker.finalFruit, 100), config, 5);
-                    if (clicker.reincarnation != 0 || clicker.omega != 0 || clicker.reformation != 0)
+                    if (clicker.reincarnation != 0 || clicker.omega != 0 || clicker.reformation != 0 || clicker.reformation2 != 0)
                         drawText(context, this.getTextRenderer(), TextUtil.presLayer(config.reincarnationText, clicker.reincarnation, -1), config, 6);
-                    if (clicker.omega != 0 || clicker.reformation != 0)
+                    if (clicker.omega != 0 || clicker.reformation != 0 || clicker.reformation2 != 0)
                         drawText(context, this.getTextRenderer(), TextUtil.presLayer(config.omegaText, clicker.omega, -1), config, 7);
-                    if (clicker.reformation != 0)
+                    if (clicker.reformation != 0 || clicker.reformation2 != 0)
                         drawText(context, this.getTextRenderer(), TextUtil.presLayer(config.reformationText, clicker.reformation, -1), config, 8);
+                    if (clicker.reformation2 != 0)
+                        drawText(context, this.getTextRenderer(), TextUtil.presLayer(config.reformation2Text, clicker.reformation2, -1), config, 9);
                 }
             } else {
                 if (inCosmos(client)) {

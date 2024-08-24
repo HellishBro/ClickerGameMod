@@ -24,6 +24,7 @@ public class Config {
     public String reincarnationText = "&rainbow;+{}∞ ";
     public String omegaText = "&mythical;+{}Ω ";
     public String reformationText = "&fire;+{}\uD800\uDF38 ";
+    public String reformation2Text = "&yinyang;+{}∑ ";
     public String enlightenText = "&#F155CE+{} ";
     public String awakenText = "&#CE55F1+{} ";
     public String perfectionText = "&mythical;+{}⧈ ";
@@ -40,7 +41,7 @@ public class Config {
             new FormattingSpice("slowrainbow", true, 0, 100, 100, 360, 100, 100, 60)
     ));
     private static Config instance;
-    private static final Gson GSON = new GsonBuilder().setStrictness(Strictness.LENIENT).disableHtmlEscaping().setPrettyPrinting().create();
+    private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
     
     public Config() {}
 
@@ -86,15 +87,13 @@ public class Config {
                             
                             ## Positioning
                             
-                            Here is how a position look: `V;15,0`.
                             The positioning is split into two parts: orientation and coordinates.
-                            The orientation can be either **V**ertical or **H**orizontal. Each component of the coordinate can have different values and will change the placement.
-                            - Positive number `[0, inf]`: distance away from the top-left corner.
-                            - Negative number `[-1, -inf]`: distance away the bottom-right corner.
-                            - `C`: centers the HUD automatically.
+                            The orientation can be either Vertical (`"horizontal": false`) or Horizontal (`"horizontal": true`).
+                            Each axis can be of either:
+                            - Positive numbers `[0, inf]`: distance away from the top-left corner.
+                            - Negative numbers `[-1, -inf]`: distance away the bottom-right corner.
                             
-                            `H;C,-30` means display the HUD horizontally, with the X centered and Y being `30` units away from the bottom edge.
-                            
+                            Alternatively, you can set `xCenter` or `yCenter` to `true` to center the text on that axis.
                             
                             ## Text Formatting Specification
                             
@@ -107,8 +106,8 @@ public class Config {
                             
                             The spice name is self-explanatory, it is the name that you put in `&name;`.
                             The transition is split into three additional parts: loop type, start color, and end color.
-                            Loop type can be either **L**oop or **B**ounce. `Loop` type means it will loop from start to end. `Bounce` type means it will start from start, go to the end, and then bounce back to start.
-                            Start and End colors are in the HSV / HSB color space. `H'S'V`. Hue falls in the range `[0, 360]`. Saturation and Value both falls in `[0, 100]`.
+                            Loop type can be either Loop (`"loop": true`) or Bounce (`"loop": false`). `Loop` type means it will loop from start to end. `Bounce` type means it will start from start, go to the end, and then bounce back to start.
+                            Start and End colors are in the HSV / HSB color space. Hue falls in the range `[0, 360]`. Saturation and Value both falls in `[0, 100]`.
                             The transitioning is linear.
                             
                             Lastly, the cycle time is in seconds. It is how long should each cycle last.
