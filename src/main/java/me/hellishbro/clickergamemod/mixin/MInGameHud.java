@@ -71,7 +71,7 @@ public abstract class MInGameHud {
 
     @Unique
     private static boolean inCosmos(MinecraftClient client) {
-        assert client.player != null;
+        if (client.player == null) return false;
         double x = client.player.getX();
         double y = client.player.getY();
         double z = client.player.getZ();

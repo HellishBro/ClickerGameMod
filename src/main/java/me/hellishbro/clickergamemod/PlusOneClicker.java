@@ -50,7 +50,6 @@ public class PlusOneClicker {
         // perfection color: #3746EF
         // cong: [&#5176E2⧈]
         // quint: &#20332E[&#99FFE6◦⁑&#50E0B0⧈&#99FFE6⁑◦&#20332E]
-        ClickerGameMod.LOGGER.info(raw);
         Matcher enlighteningMatch = Pattern.compile("\\[&#F155CE\\+(\\d+)]").matcher(raw);
         enlightening = enlighteningMatch.find() ? Integer.parseInt(enlighteningMatch.group(1)) : 0;
 
@@ -65,7 +64,7 @@ public class PlusOneClicker {
         this(0, 0, 0, 0, 0, 0, 0, 0, 0, false, 0, 0, 0);
     }
 
-    public static PlusOneClicker fromText(Text text, PlusOneClicker old) {
+    public void fromText(Text text) {
         String raw = TextUtil.toSection(text);
         raw = raw.replaceAll("&r&f&r&8« ", "").replaceAll(" &r&8»", "");
         raw = raw.replaceAll("&r", "");
@@ -79,36 +78,34 @@ public class PlusOneClicker {
         raw = raw.replaceAll("\\[&#99BBDD\uD83C\uDF27]", ""); // seeker
 
         // actual processing nor way
-        boolean challenge = Pattern.compile("&c❁").matcher(raw).find();
+        challenge = Pattern.compile("&c❁").matcher(raw).find();
 
         Matcher presMatch = Pattern.compile("\\[&a\\+(\\d+)]").matcher(raw);
-        long prestige = presMatch.find() ? Long.parseLong(presMatch.group(1)) : 0;
+        prestige = presMatch.find() ? Long.parseLong(presMatch.group(1)) : 0;
 
-        Matcher spMatch = Pattern.compile("\\[&5\\+(\\d+)]").matcher(raw);
-        long superprestige = spMatch.find() ? Long.parseLong(spMatch.group(1)) : 0;
+        Matcher spMatch = Pattern.compile("\\[&5\\+(\\d+)(?:\\.\\d+)?]").matcher(raw);
+        superprestige = spMatch.find() ? Long.parseLong(spMatch.group(1)) : 0;
 
-        Matcher rebMatch = Pattern.compile("\\[&c\\+(\\d+)]").matcher(raw);
-        long rebirth = rebMatch.find() ? Long.parseLong(rebMatch.group(1)) : 0;
+        Matcher rebMatch = Pattern.compile("\\[&c\\+(\\d+)(?:\\.\\d+)?]").matcher(raw);
+        rebirth = rebMatch.find() ? Long.parseLong(rebMatch.group(1)) : 0;
 
-        Matcher apothMatch = Pattern.compile("\\[&b\\+(\\d+)]").matcher(raw);
-        long apotheosis = apothMatch.find() ? Long.parseLong(apothMatch.group(1)) : 0;
+        Matcher apothMatch = Pattern.compile("\\[&b\\+(\\d+)(?:\\.\\d+)?]").matcher(raw);
+        apotheosis = apothMatch.find() ? Long.parseLong(apothMatch.group(1)) : 0;
 
         Matcher ffMatch = Pattern.compile("\\[&e\\+(\\d+)(&#CCBD8E◦&#FFD856\\d*❂)?]").matcher(raw);
-        long finalFruit = ffMatch.find() ? Long.parseLong(ffMatch.group(1)) : 0;
+        finalFruit = ffMatch.find() ? Long.parseLong(ffMatch.group(1)) : 0;
 
         Matcher reinMatch = Pattern.compile("\\[&#?[0-9A-Fa-f]+\\+(\\d+)∞]").matcher(raw);
-        long reincarnation = reinMatch.find() ? Long.parseLong(reinMatch.group(1)) : 0;
+        reincarnation = reinMatch.find() ? Long.parseLong(reinMatch.group(1)) : 0;
 
         Matcher omegaMatch = Pattern.compile("\\[&#?[0-9A-Fa-f]+\\+(\\d+)Ω(⁺[⁰¹²³⁴⁵⁶⁷⁸⁹]+)?(⁺[⁰¹²³⁴⁵⁶⁷⁸⁹]+)?]").matcher(raw);
-        long omega = omegaMatch.find() ? Long.parseLong(omegaMatch.group(1)) : 0;
+        omega = omegaMatch.find() ? Long.parseLong(omegaMatch.group(1)) : 0;
 
         Matcher rfmMatch = Pattern.compile("\\[&#?[0-9A-Fa-f]+\\+\\d+Ω(⁺[⁰¹²³⁴⁵⁶⁷⁸⁹]+)(⁺[⁰¹²³⁴⁵⁶⁷⁸⁹]+)?]").matcher(raw);
-        long reformation = rfmMatch.find() ? parseSuperscriptToInt(rfmMatch.group(1).substring(1)) : 0;
+        reformation = rfmMatch.find() ? parseSuperscriptToInt(rfmMatch.group(1).substring(1)) : 0;
 
         Matcher rfm2Match = Pattern.compile("\\[&#?[0-9A-Fa-f]+\\+\\d+Ω(⁺[⁰¹²³⁴⁵⁶⁷⁸⁹]+)(⁺[⁰¹²³⁴⁵⁶⁷⁸⁹]+)]").matcher(raw);
-        long reformation2 = rfm2Match.find() ? parseSuperscriptToInt(rfm2Match.group(2).substring(1)) : 0;
-
-        return new PlusOneClicker(prestige, superprestige, rebirth, apotheosis, finalFruit, reincarnation, omega, reformation, reformation2, challenge, old.enlightening, old.awakening, old.perfection);
+        reformation2 = rfm2Match.find() ? parseSuperscriptToInt(rfm2Match.group(2).substring(1)) : 0;
     }
 
     private static long parseSuperscriptToInt(String superscript) {

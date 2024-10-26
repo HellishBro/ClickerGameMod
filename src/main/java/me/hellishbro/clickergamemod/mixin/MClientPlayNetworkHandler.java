@@ -4,38 +4,37 @@ import me.hellishbro.clickergamemod.ClickerGameMod;
 import me.hellishbro.clickergamemod.TextUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Objects;
+
 @Mixin(ClientPlayNetworkHandler.class)
 public class MClientPlayNetworkHandler {
-    @Inject(at=@At("HEAD"), method="onGameMessage", cancellable=true)
-    private void onGameMessage(GameMessageS2CPacket packet, CallbackInfo ci) {
-        if (ClickerGameMod.GET_COSMOS) {
-            Text content = packet.content();
-            String raw = TextUtil.toSection(content);
-            ClickerGameMod.LOGGER.info(raw);
-            if (ClickerGameMod.STATS_COMMAND_RUNNER.isEmpty()) {
-                if (raw.endsWith("'s tags:")) {
-                    ClickerGameMod.STATS_COMMAND_RUNNER = raw.replaceAll("&r", "").split("'")[0];
-                    ClickerGameMod.LOGGER.info("@stats runner: {}", ClickerGameMod.STATS_COMMAND_RUNNER);
-                }
+    @Inject(at=@At("HEAD"), method="onPlayerListHeader")
+    private void onGameMessage(PlayerListHeaderS2CPacket packet, CallbackInfo ci) {
+        if (ClickerGameMod.CLICKING) {
+            Text content = packet.getFooter();
+            if (inCosmos(MinecraftClient.getInstance())) {
+                ClickerGameMod.stats.cosmosFromText(content);
             } else {
-                if (ClickerGameMod.STATS_COMMAND_RUNNER.equals(MinecraftClient.getInstance().getSession().getUsername())) {
-                    ClickerGameMod.LOGGER.info("@stats runner == player name");
-                    if (raw.startsWith("&r&f&r&#20332E") || raw.startsWith("&r&f&r&8[&r&#F155CE") || raw.startsWith("&r&f&r&8[&r&#CE55F1") || raw.startsWith("&r&f&r&8[&r&#3746EF") || raw.startsWith("&r&f&r&8[&r&#5176E2") || raw.isEmpty()) {
-                        ClickerGameMod.stats.cosmosFromText(content);
-                        ClickerGameMod.LOGGER.info("Cosmos tag get.");
-                        ClickerGameMod.GET_COSMOS = false;
-                        ClickerGameMod.STATS_COMMAND_RUNNER = "";
-                    }
-                }
+                ClickerGameMod.stats.fromText(content);
             }
-            ci.cancel();
         }
+        ClickerGameMod.CLICKING = TextUtil.toSection(packet.getHeader()).equals("&r&f&r&a+1 clicker");
+    }
+
+    @Unique
+    private static boolean inCosmos(MinecraftClient client) {
+        if (client.player == null) return false;
+        double x = client.player.getX();
+        double y = client.player.getY();
+        double z = client.player.getZ();
+        return 7185 <= x && x <= 7334 && 2 <= y && y <= 65 && 6765 <= z && z <= 6914;
     }
 }
