@@ -1,6 +1,5 @@
 package me.hellishbro.clickergamemod.mixin;
 
-import me.hellishbro.clickergamemod.ClickerGameMod;
 import me.hellishbro.clickergamemod.TextUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;

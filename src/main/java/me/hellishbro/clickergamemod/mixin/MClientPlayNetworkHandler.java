@@ -12,21 +12,19 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Objects;
-
 @Mixin(ClientPlayNetworkHandler.class)
 public class MClientPlayNetworkHandler {
     @Inject(at=@At("HEAD"), method="onPlayerListHeader")
     private void onGameMessage(PlayerListHeaderS2CPacket packet, CallbackInfo ci) {
         if (ClickerGameMod.CLICKING) {
-            Text content = packet.getFooter();
+            Text content = packet.footer();
             if (inCosmos(MinecraftClient.getInstance())) {
                 ClickerGameMod.stats.cosmosFromText(content);
             } else {
                 ClickerGameMod.stats.fromText(content);
             }
         }
-        ClickerGameMod.CLICKING = TextUtil.toSection(packet.getHeader()).equals("&r&f&r&a+1 clicker");
+        ClickerGameMod.CLICKING = TextUtil.toSection(packet.header()).equals("&r&f&r&a+1 clicker");
     }
 
     @Unique

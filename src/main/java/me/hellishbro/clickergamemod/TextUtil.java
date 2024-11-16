@@ -64,7 +64,7 @@ public class TextUtil {
                     s = s.withFormatting(Formatting.byCode(col.charAt(1)));
                 } else {
                     s = Style.EMPTY.withColor(
-                            TextColor.parse(col.substring(1)).getOrThrow(false, (h) -> {throw new IllegalArgumentException(h);}));
+                            TextColor.parse(col.substring(1)).getOrThrow());
                 }
                 lastIndex = matcher.end();
             }
