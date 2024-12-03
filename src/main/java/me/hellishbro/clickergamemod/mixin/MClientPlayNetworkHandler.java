@@ -24,7 +24,7 @@ public class MClientPlayNetworkHandler {
                 ClickerGameMod.stats.fromText(content);
             }
         }
-        ClickerGameMod.CLICKING = TextUtil.toSection(packet.header()).equals("&r&f&r&a+1 clicker");
+        ClickerGameMod.CLICKING = TextUtil.toSection(packet.header()).contains("&a+1 clicker");
     }
 
     @Unique
